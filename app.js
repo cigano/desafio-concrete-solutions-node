@@ -4,9 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+// Database
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/concrete');
 
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var usuarios = require('./routes/usuarios');
 
 var app = express();
 
@@ -22,8 +26,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Make our db accessible to our router
+app.use(function(req,res,next){
+    req.db = db;
+    next();
+});
+
 app.use('/', routes);
-app.use('/users', users);
+app.use('/usuarios', usuarios);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
