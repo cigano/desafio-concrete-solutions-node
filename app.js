@@ -11,6 +11,8 @@ var db = monk('localhost:27017/concrete');
 
 var routes = require('./routes/index');
 var usuarios = require('./routes/usuarios');
+var login = require('./routes/login');
+var user_token = require('./routes/user_token');
 
 var app = express();
 
@@ -34,6 +36,8 @@ app.use(function(req,res,next){
 
 app.use('/', routes);
 app.use('/usuarios', usuarios);
+app.use('/login', login);
+app.use('/user_token', user_token);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
